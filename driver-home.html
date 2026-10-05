@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Driver Home · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div>
+        <h1 id="greeting">Welcome back</h1>
+        <p class="subtitle text-muted">Offer rides, manage requests, and grow your rating.</p>
+      </div>
+      <a class="btn btn-primary" href="offer-ride.html">+ Offer a Ride</a>
+    </div>
+
+    <div class="stat-grid" id="driver-stats"></div>
+
+    <div class="dashboard-links">
+      <a class="link-card" href="offer-ride.html">
+        <span class="link-title">Offer a Ride</span>
+        <span class="link-desc">Vehicle is filled in automatically from your profile</span>
+      </a>
+      <a class="link-card" href="my-offered-rides.html">
+        <span class="link-title">My Offered Rides</span>
+        <span class="link-desc">Manage scheduled, active, and completed rides</span>
+      </a>
+      <a class="link-card" href="profile.html">
+        <span class="link-title">Driver Profile</span>
+        <span class="link-desc">Update your vehicle and contact details</span>
+      </a>
+    </div>
+
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-top:32px;">
+      <h2 style="margin:0;">Ride proposals from riders</h2>
+      <a class="btn btn-ghost btn-sm" href="community.html">View all</a>
+    </div>
+    <p class="text-muted" style="margin:6px 0 14px;">Students and faculty have asked for these trips. Offer a ride to answer one.</p>
+    <div id="proposals" class="grid grid-2"></div>
+
+    <h2 style="margin-top:32px;">Your upcoming rides</h2>
+    <div id="upcoming-rides" class="grid grid-2"></div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/community.js"></script>
+<script src="../js/driver.js"></script>
+<script>
+  (async function () {
+    const user = Auth.requirePage({ role: "driver" });
+    Nav.render("driver-home.html");
+    document.getElementById("greeting").textContent = `Welcome, ${user.name.split(" ")[0]}`;
+
+    try {
+      const me = await Api.get("/auth_me.php");
+      const dp = me.driverProfile;
+      const avgRating = dp.rating_count ? (dp.rating_sum / dp.rating_count).toFixed(1) : "—";
+      document.getElementById("driver-stats").innerHTML = `
+        <div class="stat-card"><div class="stat-value">${dp.completed_rides}</div><div class="stat-label">Completed Rides</div></div>
+        <div class="stat-card"><div class="stat-value">${avgRating}</div><div class="stat-label">Avg. Rating</div></div>
+        <div class="stat-card"><div class="stat-value">${vehicleIcon(dp.vehicle_type)} ${escapeHtml(dp.vehicle_type)}</div><div class="stat-label">Vehicle</div></div>
+        <div class="stat-card"><div class="stat-value">${escapeHtml(dp.vehicle_plate)}</div><div class="stat-label">Plate</div></div>
+      `;
+    } catch (err) {
+      showToast(err.message, "error");
+    }
+
+    const proposalsBox = document.getElementById("proposals");
+    try {
+      const proposals = await Api.get("/community_posts.php?proposals=1");
+      proposalsBox.innerHTML = proposals.length
+        ? proposals.slice(0, 4).map(proposalCardHtml).join("")
+        : `<div class="empty-state"><p>No ride proposals right now. New requests from riders will appear here.</p></div>`;
+    } catch (err) {
+      proposalsBox.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+    }
+
+    const list = document.getElementById("upcoming-rides");
+    list.innerHTML = `<div class="loading-state">Loading your rides…</div>`;
+    try {
+      const rides = await Api.get("/rides_mine.php");
+      const upcoming = rides.filter((r) => r.status === "scheduled" || r.status === "active");
+      if (upcoming.length === 0) {
+        list.innerHTML = `<div class="empty-state"><p>No upcoming rides. Offer one to get started!</p></div>`;
+      } else {
+        list.innerHTML = upcoming.slice(0, 4).map((r) => MyOfferedRidesPage.card(r)).join("");
+      }
+    } catch (err) {
+      list.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+    }
+  })();
+</script>
+</body>
+</html>

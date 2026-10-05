@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Offer a Ride · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div>
+        <h1>Offer a Ride</h1>
+        <p class="subtitle text-muted">Every ride must start or end at UIU Campus.</p>
+      </div>
+    </div>
+
+    <div id="proposal-banner"></div>
+
+    <div class="two-col">
+      <form id="offer-form" class="card">
+        <div class="form-row cols-2">
+          <div class="field">
+            <label for="pickup">Pickup location</label>
+            <input type="text" id="pickup" data-location placeholder="e.g. UIU Campus" required>
+          </div>
+          <div class="field">
+            <label for="destination">Destination</label>
+            <input type="text" id="destination" data-location placeholder="e.g. Mirpur 10" required>
+          </div>
+        </div>
+        <div class="form-row cols-3">
+          <div class="field">
+            <label for="date">Date</label>
+            <input type="date" id="date" required>
+          </div>
+          <div class="field">
+            <label for="time">Time</label>
+            <input type="time" id="time" required>
+          </div>
+          <div class="field">
+            <label for="seats">Available seats</label>
+            <input type="number" id="seats" min="1" max="10" value="1" required>
+          </div>
+        </div>
+        <div class="field">
+          <label for="fare">Fare per person (BDT, 0 for free)</label>
+          <input type="number" id="fare" min="0" value="0">
+        </div>
+        <div class="field">
+          <label for="notes">Additional notes (optional)</label>
+          <textarea id="notes" placeholder="e.g. Waiting near Gate 2, AC on"></textarea>
+        </div>
+        <div id="offer-error"></div>
+        <button type="submit" class="btn btn-primary btn-block">Publish Ride</button>
+      </form>
+
+      <div class="card">
+        <h3>Your vehicle</h3>
+        <div id="vehicle-readout" class="text-secondary"></div>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/locations.js"></script>
+<script src="../js/driver.js"></script>
+<script>OfferRidePage.init();</script>
+</body>
+</html>

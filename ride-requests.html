@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ride Requests · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div>
+        <h1>Ride Requests</h1>
+        <p class="subtitle" id="ride-summary"></p>
+      </div>
+      <a class="btn btn-ghost" href="my-offered-rides.html">← Back to my rides</a>
+    </div>
+
+    <div id="requests-list"></div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/driver.js"></script>
+<script>RideRequestsPage.init();</script>
+</body>
+</html>
