@@ -1,0 +1,89 @@
+/* =================================================================
+   UIU Ride — responsive.css
+   Mobile is the default (see base/layout/components). These rules
+   progressively enhance the layout for larger viewports so the app
+   looks intentionally designed at every size, not a stretched phone
+   screen.
+   ================================================================= */
+
+/* ---------- Small phones: tighten up spacing a bit further ---------- */
+@media (max-width: 380px) {
+  .app-main { padding-left: 12px; padding-right: 12px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .role-choice { grid-template-columns: 1fr; }
+}
+
+/* ---------- Tablet (>= 600px): 2-column grids, wider cards ---------- */
+@media (min-width: 600px) {
+  .grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .auth-card { padding: 40px 44px; }
+  .dashboard-links { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* ---------- Laptop / small desktop (>= 900px) ---------- */
+@media (min-width: 900px) {
+  /* Switch from bottom tab bar to a proper top nav; free up bottom space */
+  .bottom-nav { display: none; }
+  .app-main { padding-bottom: 40px; }
+
+  .desktop-nav { display: flex; }
+
+  .app-header { padding: 0 32px; height: 72px; }
+  .app-main { padding-top: 28px; }
+
+  .stat-grid { grid-template-columns: repeat(4, 1fr); }
+  .grid.grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid.grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .two-col { grid-template-columns: 2fr 1fr; align-items: start; }
+
+  .form-row.cols-2 { grid-template-columns: 1fr 1fr; }
+  .form-row.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .dashboard-links { grid-template-columns: repeat(3, 1fr); }
+
+  .page-heading h1 { font-size: 2.1rem; }
+}
+
+/* ---------- Desktop (>= 1200px): more breathing room, wider content ---------- */
+@media (min-width: 1200px) {
+  :root { --content-max-width: 1280px; }
+  .app-main { padding-left: 32px; padding-right: 32px; }
+  .stat-grid { grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .grid.grid-4 { grid-template-columns: repeat(4, 1fr); }
+}
+
+/* ---------- Large desktop (>= 1600px): cap growth, avoid stretch ---------- */
+@media (min-width: 1600px) {
+  :root { --content-max-width: 1400px; }
+}
+
+/* ---------- Auth screens: side-by-side hero on wide screens ---------- */
+@media (min-width: 900px) {
+  .centered-auth {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    align-items: stretch;
+    padding: 0;
+  }
+  .auth-hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+    color: #fff;
+  }
+  .auth-hero h1 { color: #fff; font-size: 2.6rem; }
+  .auth-hero p { color: #cbd5e1; max-width: 420px; }
+  .auth-form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--surface-muted);
+    padding: 40px;
+  }
+  .auth-card { box-shadow: none; }
+}
+@media (max-width: 899px) {
+  .auth-hero { display: none; }
+}

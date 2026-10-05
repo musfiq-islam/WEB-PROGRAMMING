@@ -1,0 +1,187 @@
+/* =================================================================
+   UIU Ride — layout.css
+   App shell: top header, side/bottom navigation, content containers.
+   Mobile-first; desktop rules live alongside each block and are
+   refined further in responsive.css breakpoints.
+   ================================================================= */
+
+.app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- Top header (all screen sizes) ---------- */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  height: var(--header-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: var(--primary-navy);
+  color: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.app-header .brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #fff;
+}
+.app-header .brand:hover { text-decoration: none; }
+.app-header .brand .logo-dot {
+  width: 30px; height: 30px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--primary-orange-light), var(--primary-orange-dark));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 800;
+  color: #fff;
+}
+
+.app-header .header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #e2e8f0;
+  font-size: 0.85rem;
+}
+
+.avatar-chip {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--primary-orange);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.8rem;
+  flex-shrink: 0;
+}
+
+/* Desktop horizontal nav links (hidden on mobile, shown >=900px) */
+.desktop-nav {
+  display: none;
+  gap: 4px;
+}
+.desktop-nav a {
+  color: #cbd5e1;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+}
+.desktop-nav a:hover { text-decoration: none; background: rgba(255,255,255,0.08); color: #fff; }
+.desktop-nav a.active { background: var(--primary-orange); color: #fff; }
+
+/* ---------- Bottom tab bar (mobile/tablet only) ---------- */
+.bottom-nav {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  z-index: 40;
+  height: var(--bottom-nav-height);
+  background: #fff;
+  border-top: 1px solid var(--border);
+  display: flex;
+  box-shadow: 0 -4px 16px rgba(15, 23, 42, 0.06);
+}
+.bottom-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+.bottom-nav a:hover { text-decoration: none; }
+.bottom-nav a.active { color: var(--primary-orange); }
+.bottom-nav .icon { display: none; }
+.bottom-nav a { justify-content: center; }
+
+/* ---------- Main content container ---------- */
+.app-main {
+  flex: 1;
+  width: 100%;
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 20px 16px calc(var(--bottom-nav-height) + 28px);
+}
+
+.page-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.page-heading .subtitle { margin: 2px 0 0; }
+
+/* ---------- Grids ---------- */
+.grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+
+.stat-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, 1fr);
+  margin-bottom: 22px;
+}
+
+.two-col {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+
+.dashboard-links {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.centered-auth {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: linear-gradient(160deg, var(--primary-navy) 0%, var(--primary-slate) 45%, #0b1220 100%);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  padding: 32px 28px;
+  box-shadow: var(--shadow-lg);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+}
+.empty-state .icon { display: none; }
+
+.loading-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: var(--text-muted);
+}
