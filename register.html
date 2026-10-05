@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register · UIU Ride</title>
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+
+<body>
+  <div class="centered-auth">
+    <div class="auth-hero">
+      <div style="margin-bottom:32px;">
+        <img src="../assets/logo-white.png" alt="UIU Ride" style="height:96px; width:auto; margin:0 auto;">
+      </div>
+      <h1>Join the UIU Ride community.</h1>
+      <p>Students and faculty find and share rides. Drivers get a dedicated account built just for offering rides — no
+        mode switching, no confusion.</p>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <img src="../assets/logo.png" alt="UIU Ride" style="height:64px; width:auto; display:block; margin:0 auto 20px;">
+        <h2 class="text-center">Create your account</h2>
+        <p class="text-muted text-center">Choose the account type that fits you.</p>
+
+        <div class="role-choice" id="role-choice">
+          <label><input type="radio" name="role" value="student" checked><span>Student</span></label>
+          <label><input type="radio" name="role" value="faculty"><span>Faculty</span></label>
+          <label><input type="radio" name="role" value="driver"><span>Driver</span></label>
+        </div>
+
+        <div id="alert-box"></div>
+
+        <form id="register-form">
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="name">Full name</label>
+              <input type="text" id="name" required>
+            </div>
+            <div class="field">
+              <label for="phone">Phone number</label>
+              <input type="tel" id="phone" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" required>
+            <div class="hint" id="email-hint">Students and faculty must use a @uiu.ac.bd email address.</div>
+          </div>
+
+          <div class="form-row cols-2" id="rider-fields">
+            <div class="field">
+              <label for="uiuId">UIU ID</label>
+              <input type="text" id="uiuId">
+            </div>
+            <div class="field">
+              <label for="department">Department</label>
+              <input type="text" id="department">
+            </div>
+          </div>
+
+          <div id="driver-fields" style="display:none;">
+            <div class="field">
+              <label for="vehicleType">Vehicle type</label>
+              <select id="vehicleType">
+                <option value="Bike">Bike</option>
+                <option value="Car">Car</option>
+                <option value="Other">Other</option>
+              </select>
+              <div class="hint">This is asked once. Every ride you offer will automatically use this vehicle.</div>
+            </div>
+            <div class="form-row cols-2">
+              <div class="field">
+                <label for="vehicleModel">Vehicle model</label>
+                <input type="text" id="vehicleModel" placeholder="e.g. Toyota Premio">
+              </div>
+              <div class="field">
+                <label for="vehiclePlate">Vehicle plate number</label>
+                <input type="text" id="vehiclePlate" placeholder="e.g. Dhaka Metro Ga-11-2233">
+              </div>
+            </div>
+            <div class="field">
+              <label for="licenseNumber">Driving license number (Must be)</label>
+              <input type="text" id="licenseNumber" required autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="nidNumber">NID number (Must be)</label>
+              <input type="text" id="nidNumber" inputmode="numeric" maxlength="17" pattern="[0-9]{10}|[0-9]{13}|[0-9]{17}" autocomplete="off" placeholder="10, 13 or 17 digit NID number" title="NID number must be 10, 13 or 17 digits">
+            </div>
+          </div>
+
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="password">Password</label>
+              <input type="password" id="password" required minlength="8">
+            </div>
+            <div class="field">
+              <label for="confirmPassword">Confirm password</label>
+              <input type="password" id="confirmPassword" required minlength="8">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+        </form>
+        <p class="text-center" style="margin-top:18px;">
+          Already have an account? <a href="login.html">Log in</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/utils.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script>
+    if (Auth.isLoggedIn()) {
+      window.location.href = Auth.homeForRole(Auth.getUser().role);
+    }
+
+    const roleInputs = document.querySelectorAll('input[name="role"]');
+    const riderFields = document.getElementById("rider-fields");
+    const driverFields = document.getElementById("driver-fields");
+    const uiuIdInput = document.getElementById("uiuId");
+
+    const emailHint = document.getElementById("email-hint");
+
+    function syncRoleFields() {
+      const role = document.querySelector('input[name="role"]:checked').value;
+      const isDriver = role === "driver";
+      riderFields.style.display = isDriver ? "none" : "grid";
+      driverFields.style.display = isDriver ? "block" : "none";
+      uiuIdInput.required = !isDriver;
+      document.getElementById("licenseNumber").required = isDriver;
+      document.getElementById("nidNumber").required = isDriver;
+      emailHint.textContent = isDriver
+        ? "Any valid email address works for driver accounts."
+        : "Students and faculty must use a @uiu.ac.bd email address.";
+    }
+    roleInputs.forEach((r) => r.addEventListener("change", syncRoleFields));
+    syncRoleFields();
+
+    document.getElementById("register-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const alertBox = document.getElementById("alert-box");
+      alertBox.innerHTML = "";
+      const role = document.querySelector('input[name="role"]:checked').value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        alertBox.innerHTML = '<div class="alert alert-error">Passwords do not match.</div>';
+        return;
+      }
+
+      const email = document.getElementById("email").value.trim();
+      if ((role === "student" || role === "faculty") && !/@uiu\.ac\.bd$/i.test(email)) {
+        alertBox.innerHTML = '<div class="alert alert-error">Students and faculty must register with a @uiu.ac.bd email address.</div>';
+        return;
+      }
+
+      const phone = document.getElementById("phone").value.trim();
+      if (!/^\d{11}$/.test(phone)) {
+        alertBox.innerHTML = '<div class="alert alert-error">Phone number must be exactly 11 digits.</div>';
+        return;
+      }
+
+      const payload = {
+        name: document.getElementById("name").value.trim(),
+        phone,
+        email,
+        password,
+        role,
+      };
+      if (role === "driver") {
+        payload.vehicleType = document.getElementById("vehicleType").value;
+        payload.vehicleModel = document.getElementById("vehicleModel").value.trim();
+        payload.vehiclePlate = document.getElementById("vehiclePlate").value.trim();
+        payload.licenseNumber = document.getElementById("licenseNumber").value.trim();
+        payload.nidNumber = document.getElementById("nidNumber").value.replace(/\s+/g, "");
+        if (!/^(\d{10}|\d{13}|\d{17})$/.test(payload.nidNumber)) {
+          alertBox.innerHTML = '<div class="alert alert-error">NID number must be 10, 13 or 17 digits.</div>';
+          return;
+        }
+      } else {
+        payload.uiuId = document.getElementById("uiuId").value.trim();
+        payload.department = document.getElementById("department").value.trim();
+      }
+
+      try {
+        const user = await Auth.register(payload);
+        window.location.href = Auth.homeForRole(user.role);
+      } catch (err) {
+        alertBox.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+      }
+    });
+  </script>
+</body>
+
+</html>

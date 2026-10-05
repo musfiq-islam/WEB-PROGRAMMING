@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <div class="centered-auth">
+    <div class="auth-hero">
+      <div style="margin-bottom:32px;">
+        <img src="../assets/logo-white.png" alt="UIU Ride" style="height:96px; width:auto; margin:0 auto;">
+      </div>
+      <h1>Get where you're going, together.</h1>
+      <p>A ride-sharing community exclusively for United International University students, faculty, and trusted drivers. Every ride connects to UIU Campus.</p>
+      <ul style="color:#cbd5e1; margin-top:20px;">
+        <li>UIU-verified student &amp; faculty accounts</li>
+        <li>Separate, dedicated driver accounts</li>
+        <li>Community posts to find travel buddies</li>
+      </ul>
+    </div>
+    <div class="auth-form-side">
+      <div class="auth-card">
+        <img src="../assets/logo.png" alt="UIU Ride" style="height:64px; width:auto; display:block; margin:0 auto 20px;">
+        <h2 class="text-center">Welcome back</h2>
+        <p class="text-muted text-center">Log in to your UIU Ride account.</p>
+        <div id="alert-box"></div>
+        <form id="login-form">
+          <div class="field">
+            <label for="email">Email address</label>
+            <input type="email" id="email" required autocomplete="username">
+          </div>
+          <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" required autocomplete="current-password">
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+        </form>
+        <p class="text-center" style="margin-top:18px;">
+          New to UIU Ride? <a href="register.html">Create an account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  if (Auth.isLoggedIn()) {
+    window.location.href = Auth.homeForRole(Auth.getUser().role);
+  }
+  if (getQueryParam("expired")) {
+    document.getElementById("alert-box").innerHTML =
+      '<div class="alert alert-info">Your session expired. Please log in again.</div>';
+  }
+
+  document.getElementById("login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const alertBox = document.getElementById("alert-box");
+    alertBox.innerHTML = "";
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    try {
+      const user = await Auth.login(email, password);
+      window.location.href = Auth.homeForRole(user.role);
+    } catch (err) {
+      alertBox.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+    }
+  });
+</script>
+</body>
+</html>
