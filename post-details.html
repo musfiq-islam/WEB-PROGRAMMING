@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Post Details · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div><h1>Community Post</h1></div>
+      <a class="btn btn-ghost" href="community.html">← Back to Community</a>
+    </div>
+
+    <div id="post-container" style="margin-bottom:20px;"></div>
+
+    <div class="card" id="offers-card" style="display:none; margin-bottom:20px;">
+      <h3>Driver offers</h3>
+      <div id="offers-list"></div>
+    </div>
+
+    <div class="card">
+      <h3>Comments</h3>
+      <form id="comment-form" style="display:flex; gap:10px; margin-bottom:16px;">
+        <input type="text" id="comment-content" placeholder="Write a comment..." style="flex:1;">
+        <button type="submit" class="btn btn-primary">Post</button>
+      </form>
+      <div id="comments-list"></div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/community.js"></script>
+<script>PostDetailsPage.init();</script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Community · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div>
+        <h1>Community</h1>
+        <p class="subtitle text-muted">"I'm going from X to Y at 5 PM — anyone interested?"</p>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div id="notifications-panel"></div>
+        <div id="posts-list" class="grid"></div>
+      </div>
+      <div class="card" id="composer">
+        <h3>Share a trip</h3>
+        <form id="post-form">
+          <div class="field">
+            <label for="content">What's the plan?</label>
+            <textarea id="content" required placeholder="I'm heading to Dhanmondi around 5 PM, anyone wants to split a CNG from UIU Campus?"></textarea>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="pickup">Pickup (optional)</label>
+              <input type="text" id="pickup" data-location>
+            </div>
+            <div class="field">
+              <label for="destination">Destination (optional)</label>
+              <input type="text" id="destination" data-location>
+            </div>
+          </div>
+          <div class="form-row cols-2">
+            <div class="field">
+              <label for="date">Date (optional)</label>
+              <input type="date" id="date">
+            </div>
+            <div class="field">
+              <label for="time">Time (optional)</label>
+              <input type="time" id="time">
+            </div>
+          </div>
+          <div id="post-error"></div>
+          <p class="hint text-muted" style="font-size:0.8rem; margin:0 0 12px;">Add a pickup and destination to send a <strong>ride proposal</strong> to every driver. They can answer it by offering a ride.</p>
+          <button type="submit" class="btn btn-primary btn-block">Post to Community</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/locations.js"></script>
+<script src="../js/community.js"></script>
+<script>CommunityPage.init();</script>
+</body>
+</html>
