@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div>
+        <h1 id="greeting">Welcome back</h1>
+        <p class="subtitle text-muted">Find a ride to or from UIU Campus, or share your own trip in Community.</p>
+      </div>
+    </div>
+
+    <div class="dashboard-links">
+      <a class="link-card" href="find-ride.html">
+        <span class="link-title">Find a Ride</span>
+        <span class="link-desc">Search rides offered by verified drivers</span>
+      </a>
+      <a class="link-card" href="my-rides.html">
+        <span class="link-title">My Ride Requests</span>
+        <span class="link-desc">Track rides you've requested or joined</span>
+      </a>
+      <a class="link-card" href="community.html">
+        <span class="link-title">Community</span>
+        <span class="link-desc">Post a trip and find travel buddies</span>
+      </a>
+      <a class="link-card" href="profile.html">
+        <span class="link-title">My Profile</span>
+        <span class="link-desc">Manage your account details</span>
+      </a>
+    </div>
+
+    <h2 style="margin-top:32px;">Latest available rides</h2>
+    <div id="preview-rides" class="grid grid-2"></div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/rides.js"></script>
+<script>
+  (async function () {
+    const user = Auth.requirePage({ role: "rider" });
+    Nav.render("student-home.html");
+    document.getElementById("greeting").textContent = `Hi, ${user.name.split(" ")[0]}`;
+
+    const preview = document.getElementById("preview-rides");
+    preview.innerHTML = `<div class="loading-state">Loading rides…</div>`;
+    try {
+      const rides = await Api.get("/rides.php");
+      if (rides.length === 0) {
+        preview.innerHTML = `<div class="empty-state"><p>No rides are available right now. Check back soon!</p></div>`;
+      } else {
+        preview.innerHTML = rides
+          .slice(0, 4)
+          .map((r) => rideCardHtml(r, `<a class="btn btn-primary btn-block" href="ride-details.html?id=${r.id}">View & Request</a>`))
+          .join("");
+      }
+    } catch (err) {
+      preview.innerHTML = `<div class="alert alert-error">${escapeHtml(err.message)}</div>`;
+    }
+  })();
+</script>
+</body>
+</html>

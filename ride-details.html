@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ride Details · UIU Ride</title>
+<link rel="icon" type="image/png" href="../assets/logo.png">
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/layout.css">
+<link rel="stylesheet" href="../css/components.css">
+<link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+<div class="app-shell">
+  <header class="app-header" id="app-header"></header>
+
+  <main class="app-main">
+    <div class="page-heading">
+      <div>
+        <h1>Ride Details</h1>
+        <p class="subtitle text-muted">Review the trip and send a request to the driver.</p>
+      </div>
+      <a class="btn btn-ghost" href="find-ride.html">← Back to search</a>
+    </div>
+
+    <div class="two-col">
+      <div id="ride-detail-container"></div>
+
+      <div class="card" id="request-panel">
+        <h3>Request a seat</h3>
+        <form id="request-form">
+          <div class="field">
+            <label for="seats">Seats needed</label>
+            <input type="number" id="seats" min="1" value="1" required>
+          </div>
+          <div class="field">
+            <label for="message">Message to driver (optional)</label>
+            <textarea id="message" placeholder="e.g. I'll be waiting at Gate 2"></textarea>
+          </div>
+          <div id="request-error"></div>
+          <button type="submit" class="btn btn-primary btn-block">Send Request</button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+</div>
+
+<script src="../js/utils.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/nav.js"></script>
+<script src="../js/rides.js"></script>
+<script>RideDetailsPage.init();</script>
+</body>
+</html>
