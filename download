@@ -1,0 +1,8 @@
+# OS/editor cruft
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local overrides (if you ever split config.php into config.php + config.local.php)
+config.local.php
